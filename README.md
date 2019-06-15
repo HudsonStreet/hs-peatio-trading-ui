@@ -1,7 +1,16 @@
 # Peatio Trading UI
 
-## Installation steps
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu"></a>
 
-Please, read [Peatio 1.5 release notes](https://github.com/rubykube/peatio/blob/master/docs/releases/1.5.0.md) for getting all details about how Trading UI works.
+## Requirement
+* ruby 2.5.3+
+* Rails 5.2.3+
 
-You can use **#449** as search term in the release notes to find required paragraph.
+<pre>
+ _   _           _                 ____  _                 _
+| | | |_   _  __| |___  ___  _ __ / ___|| |_ _ __ ___  ___| |_
+| |_| | | | |/ _` / __|/ _ \| '_ \\___ \| __| '__/ _ \/ _ \ __|
+|  _  | |_| | (_| \__ \ (_) | | | |___) | |_| | |  __/  __/ |_
+|_| |_|\__,_|\__,_|___/\___/|_| |_|____/ \__|_|  \___|\___|\__|
+</pre>

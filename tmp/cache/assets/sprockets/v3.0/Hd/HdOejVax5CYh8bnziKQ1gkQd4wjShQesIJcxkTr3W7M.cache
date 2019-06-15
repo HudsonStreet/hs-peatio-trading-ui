@@ -1,0 +1,54 @@
+I"(function() {
+  this.AccountSummaryUI = flight.component(function() {
+    this.attributes({
+      total_assets: '#total_assets'
+    });
+    this.updateAccount = function(event, data) {
+      var account, currency, results;
+      results = [];
+      for (currency in data) {
+        account = data[currency];
+        this.$node.find("tr." + currency + " span.amount").text(formatter.round(account.balance, 5));
+        results.push(this.$node.find("tr." + currency + " span.locked").text(formatter.round(account.locked, 5)));
+      }
+      return results;
+    };
+    this.updateTotalAssets = function() {
+      var account, currency, displayCurrency, ref, sum, symbol, ticker;
+      displayCurrency = gon.display_currency;
+      symbol = gon.currencies[displayCurrency].symbol;
+      sum = 0;
+      ref = this.accounts;
+      for (currency in ref) {
+        account = ref[currency];
+        if (currency === displayCurrency) {
+          sum += +account.balance;
+          sum += +account.locked;
+        } else if (ticker = this.tickers["" + currency + displayCurrency]) {
+          sum += +account.balance * +ticker.last;
+          sum += +account.locked * +ticker.last;
+        }
+      }
+      return this.select('total_assets').text("" + symbol + (formatter.round(sum, 2)));
+    };
+    return this.after('initialize', function() {
+      this.accounts = gon.accounts;
+      this.tickers = gon.tickers;
+      this.on(document, 'account::update', this.updateAccount);
+      this.on(document, 'account::update', (function(_this) {
+        return function(event, data) {
+          _this.accounts = data;
+          return _this.updateTotalAssets();
+        };
+      })(this));
+      return this.on(document, 'market::tickers', (function(_this) {
+        return function(event, data) {
+          _this.tickers = data.raw;
+          return _this.updateTotalAssets();
+        };
+      })(this));
+    });
+  });
+
+}).call(this);
+:ET

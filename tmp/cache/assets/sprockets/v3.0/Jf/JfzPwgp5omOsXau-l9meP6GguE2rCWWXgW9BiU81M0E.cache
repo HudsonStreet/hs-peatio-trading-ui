@@ -1,0 +1,41 @@
+I"(function() {
+  var barongPath, query, ranger_address, ranger_scheme, stream;
+
+  stream = ['global', "" + gon.market.id, 'order', 'trade'];
+
+  query = {
+    stream: stream
+  };
+
+  ranger_scheme = gon.ranger_connect_secure === "true" ? "wss://" : "ws://";
+
+  ranger_address = ("" + ranger_scheme + gon.ranger_host + ":" + gon.ranger_port + "?") + $.param(query, true);
+
+  barongPath = ("" + gon.barong_domain) + "/api/v1/sessions/jwt";
+
+  window.ranger = new RangerWebSocket(ranger_address);
+
+  if (gon.user) {
+    ranger.bind('open', function() {
+      console.info('Connection to Ranger has been established');
+      return $.ajax({
+        type: "POST",
+        url: barongPath,
+        async: true,
+        xhrFields: {
+          withCredentials: true
+        },
+        success: function(res) {
+          console.info('Solving authorization challenge by sending JWT token');
+          return ranger.send(JSON.stringify({
+            jwt: "Bearer " + res
+          }));
+        }
+      });
+    });
+  }
+
+  ranger.connect();
+
+}).call(this);
+:ET
